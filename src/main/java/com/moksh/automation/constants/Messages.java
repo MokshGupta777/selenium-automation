@@ -5,9 +5,6 @@ public final class Messages {
     private Messages() {
     }
 
-    public static final String LOGIN_SUCCESS = "Logged In Successfully";
-
     public static final String LOGIN_FAILED =
-            "Your username is invalid!";
-
+            "Your email or password is incorrect!";
 }

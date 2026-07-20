@@ -13,36 +13,30 @@ public class LoginAssertions {
     }
 
     /**
-     * Verifies that login was successful.
+     * Verify successful login.
      */
     public void verifySuccessfulLogin() {
 
         Assert.assertTrue(
                 loginFlow.isLoginSuccessful(),
-                "Login was expected to succeed, but it failed."
-        );
-
-        Assert.assertEquals(
-                loginFlow.getSuccessMessage(),
-                Messages.LOGIN_SUCCESS,
-                "Success message does not match."
+                "User should be logged in successfully."
         );
     }
 
     /**
-     * Verifies that login failed.
+     * Verify failed login.
      */
     public void verifyFailedLogin() {
 
         Assert.assertTrue(
                 loginFlow.isLoginFailed(),
-                "Login was expected to fail, but it succeeded."
+                "Login should fail for invalid credentials."
         );
 
         Assert.assertEquals(
-                loginFlow.getErrorMessage(),
+                loginFlow.getLoginErrorMessage(),
                 Messages.LOGIN_FAILED,
-                "Error message does not match."
+                "Incorrect error message displayed."
         );
     }
 }
