@@ -40,11 +40,15 @@ public final class ConfigReader {
     }
 
     public static String getValidEmail() {
-        return properties.getProperty("valid.email");
+        return System.getenv().getOrDefault(
+                "VALID_EMAIL",
+                properties.getProperty("valid.email"));
     }
 
     public static String getValidPassword() {
-        return properties.getProperty("valid.password");
+        return System.getenv().getOrDefault(
+                "VALID_PASSWORD",
+                properties.getProperty("valid.password"));
     }
 
     public static String getInvalidEmail() {

@@ -1,5 +1,6 @@
 package com.moksh.automation.driver;
 
+import com.moksh.automation.config.ConfigReader;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -22,14 +23,19 @@ public final class DriverFactory {
 
         WebDriver driver;
 
+        // Automatically enable headless mode on GitHub Actions
+        boolean isGitHub = System.getenv("GITHUB_ACTIONS") != null;
+        boolean runHeadless = headless || isGitHub;
+
         switch (browser.toLowerCase()) {
 
             case "firefox":
+
                 WebDriverManager.firefoxdriver().setup();
 
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
 
-                if (headless) {
+                if (runHeadless) {
                     firefoxOptions.addArguments("-headless");
                 }
 
@@ -37,13 +43,16 @@ public final class DriverFactory {
                 break;
 
             case "edge":
+
                 WebDriverManager.edgedriver().setup();
 
                 EdgeOptions edgeOptions = new EdgeOptions();
 
-                if (headless) {
+                if (runHeadless) {
                     edgeOptions.addArguments("--headless=new");
                 }
+
+                edgeOptions.addArguments("--window-size=1920,1080");
 
                 driver = new EdgeDriver(edgeOptions);
                 break;
@@ -55,11 +64,13 @@ public final class DriverFactory {
 
                 ChromeOptions chromeOptions = new ChromeOptions();
 
-                if (headless) {
+                if (runHeadless) {
                     chromeOptions.addArguments("--headless=new");
+                    chromeOptions.addArguments("--window-size=1920,1080");
+                } else {
+                    chromeOptions.addArguments("--start-maximized");
                 }
 
-                chromeOptions.addArguments("--start-maximized");
                 chromeOptions.addArguments("--disable-notifications");
                 chromeOptions.addArguments("--disable-infobars");
                 chromeOptions.addArguments("--remote-allow-origins=*");
@@ -71,8 +82,11 @@ public final class DriverFactory {
                 break;
         }
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
+        driver.manage().timeouts().implicitlyWait(
+                Duration.ofSeconds(ConfigReader.getImplicitWait()));
+
+        driver.manage().timeouts().pageLoadTimeout(
+                Duration.ofSeconds(ConfigReader.getPageLoadTimeout()));
 
         DRIVER.set(driver);
     }
@@ -84,12 +98,8 @@ public final class DriverFactory {
     public static void quitDriver() {
 
         if (DRIVER.get() != null) {
-
             DRIVER.get().quit();
             DRIVER.remove();
-
         }
-
     }
-
 }
