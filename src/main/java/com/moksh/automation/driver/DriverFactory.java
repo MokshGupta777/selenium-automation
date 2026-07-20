@@ -63,6 +63,8 @@ public final class DriverFactory {
                 chromeOptions.addArguments("--disable-notifications");
                 chromeOptions.addArguments("--disable-infobars");
                 chromeOptions.addArguments("--remote-allow-origins=*");
+                chromeOptions.addArguments("--no-sandbox");
+                chromeOptions.addArguments("--disable-dev-shm-usage");
 
                 driver = new ChromeDriver(chromeOptions);
 
