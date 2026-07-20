@@ -1,4 +1,4 @@
-package com.moksh.automation.tests;
+package com.moksh.automation.stepdefinitions;
 
 import com.moksh.automation.assertions.LoginAssertions;
 import com.moksh.automation.config.ConfigReader;
