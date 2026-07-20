@@ -5,81 +5,48 @@ import org.openqa.selenium.By;
 
 public class LoginPage extends BasePage {
 
-    // Locators
-    private final By usernameInput = By.id("username");
+    private final By emailTextbox =
+            By.xpath("//input[@data-qa='login-email']");
 
-    private final By passwordInput = By.id("password");
+    private final By passwordTextbox =
+            By.xpath("//input[@data-qa='login-password']");
 
-    private final By loginButton = By.id("submit");
+    private final By loginButton =
+            By.xpath("//button[@data-qa='login-button']");
 
-    private final By successMessage =
-            By.xpath("//h1[contains(text(),'Logged In Successfully')]");
+    private final By loggedInUser =
+            By.xpath("//a[contains(text(),'Logged in as')]");
 
-    private final By errorMessage =
-            By.id("error");
+    private final By loginError =
+            By.xpath("//p[contains(text(),'Your email or password is incorrect!')]");
 
-    /**
-     * Opens the login page.
-     */
-    public void open(String url) {
-        getDriver().get(url);
+    public void enterEmail(String email) {
+        type(emailTextbox, email);
     }
 
-    /**
-     * Enters the username.
-     */
-    public void enterUsername(String username) {
-        type(usernameInput, username);
-    }
-
-    /**
-     * Enters the password.
-     */
     public void enterPassword(String password) {
-        type(passwordInput, password);
+        type(passwordTextbox, password);
     }
 
-    /**
-     * Clicks the Login button.
-     */
     public void clickLogin() {
         click(loginButton);
     }
 
-    /**
-     * Performs a login.
-     */
-    public void login(String username, String password) {
-        enterUsername(username);
+    public void login(String email, String password) {
+        enterEmail(email);
         enterPassword(password);
         clickLogin();
     }
 
-    /**
-     * Returns the success message.
-     */
-    public String getSuccessMessage() {
-        return getText(successMessage);
+    public boolean isLoggedIn() {
+        return isDisplayed(loggedInUser);
     }
 
-    /**
-     * Returns the error message.
-     */
-    public String getErrorMessage() {
-        return getText(errorMessage);
+    public boolean isLoginErrorDisplayed() {
+        return isDisplayed(loginError);
     }
 
-    /**
-     * Checks if success message is displayed.
-     */
-    public boolean isLoginSuccessful() {
-        return isDisplayed(successMessage);
-    }
-
-    /**
-     * Checks if error message is displayed.
-     */
-    public boolean isLoginFailed() {
-        return isDisplayed(errorMessage);
+    public String getLoginError() {
+        return getText(loginError);
     }
 }
