@@ -1,0 +1,13 @@
+package com.moksh.automation.data;
+
+public final class Users {
+
+    private Users() {
+    }
+
+    public static final String VALID_USERNAME = "student";
+    public static final String VALID_PASSWORD = "Password123";
+
+    public static final String INVALID_USERNAME = "invalid";
+    public static final String INVALID_PASSWORD = "invalid123";
+}
